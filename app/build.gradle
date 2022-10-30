@@ -1,0 +1,119 @@
+plugins {
+    id 'com.android.application'
+    id 'org.jetbrains.kotlin.android'
+    id 'dagger.hilt.android.plugin'
+    id 'kotlin-kapt'
+    id 'kotlin-parcelize'
+}
+
+android {
+    signingConfigs {
+        release {
+        storeFile file('C:\\Users\\emirh\\Documents\\shopiroller.jks')
+            storePassword '1234567'
+            keyAlias 'key0'
+            keyPassword '1234567'
+        }
+    }
+    namespace 'com.emirhan.shopirollerdemo'
+    compileSdk 33
+
+    defaultConfig {
+        applicationId "com.emirhan.shopirollerdemo"
+        minSdk 23
+        targetSdk 33
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        vectorDrawables {
+            useSupportLibrary true
+        }
+        signingConfig signingConfigs.release
+    }
+
+    lintOptions {
+        checkReleaseBuilds false
+        abortOnError false
+    }
+
+    buildTypes {
+        debug {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+        release {
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_11
+        targetCompatibility JavaVersion.VERSION_11
+    }
+    kotlinOptions {
+        jvmTarget = '11'
+    }
+    buildFeatures {
+        compose true
+    }
+    composeOptions {
+        kotlinCompilerExtensionVersion compose_compiler
+    }
+    packagingOptions {
+        resources {
+            excludes += '/META-INF/{AL2.0,LGPL2.1}'
+            exclude 'META-INF/DEPENDENCIES'
+            exclude 'META-INF/LICENSE'
+            exclude 'META-INF/LICENSE.txt'
+            exclude 'META-INF/license.txt'
+            exclude 'META-INF/NOTICE'
+            exclude 'META-INF/NOTICE.txt'
+            exclude 'META-INF/notice.txt'
+            exclude 'META-INF/ASL2.0'
+            exclude 'META-INF/*'
+            exclude("META-INF/*.kotlin_module")
+        }
+    }
+}
+
+dependencies {
+    // Core
+    implementation "androidx.core:core-ktx:$versions.core"
+    // Compose
+    implementation "androidx.compose.material:material:$versions.compose"
+    implementation "androidx.compose.ui:ui-util:$versions.compose"
+    implementation "androidx.lifecycle:lifecycle-viewmodel-compose:$versions.viewmodel"
+    implementation "androidx.navigation:navigation-compose:$versions.nav_compose"
+    // Compose Preview
+    debugImplementation "androidx.compose.ui:ui-tooling:$versions.compose_preview"
+    implementation "androidx.compose.ui:ui-tooling-preview:$versions.compose_preview"
+    // Coroutine Lifecycle Scopes
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$versions.cycle_coroutine"
+    implementation "androidx.lifecycle:lifecycle-runtime-ktx:$versions.cycle_coroutine"
+    // Coroutine Image Loader (Coil)
+    implementation "io.coil-kt:coil-compose:$versions.coil"
+    // Room
+    implementation "androidx.room:room-runtime:$versions.room"
+    implementation "androidx.room:room-ktx:$versions.room"
+    kapt "androidx.room:room-compiler:$versions.room"
+    // Hilt
+    implementation "com.google.dagger:hilt-android:$versions.hilt"
+    implementation "com.google.dagger:hilt-android:$versions.hilt"
+    kapt "com.google.dagger:hilt-android-compiler:$versions.hilt"
+    kapt "androidx.hilt:hilt-compiler:$versions.hilt_compiler"
+    // Hilt Navigation Compose
+    implementation "androidx.hilt:hilt-navigation-compose:$versions.hilt_nav_compose"
+    // Retrofit
+    implementation "com.squareup.retrofit2:retrofit:$versions.retrofit"
+    implementation "com.squareup.retrofit2:converter-gson:$versions.retrofit"
+    // Additional Views for Compose
+    implementation "com.google.accompanist:accompanist-insets:$versions.insets"
+    implementation "com.google.accompanist:accompanist-navigation-animation:$versions.nav_anim"
+    implementation "com.google.accompanist:accompanist-systemuicontroller:$versions.systemuicontrol"
+    implementation "com.google.accompanist:accompanist-pager:$versions.pager"
+    implementation "com.google.accompanist:accompanist-pager-indicators:$versions.pager"
+    implementation "com.google.accompanist:accompanist-placeholder:$versions.placeholder"
+    implementation "com.google.accompanist:accompanist-swiperefresh:$versions.swiperefresh"
+}
