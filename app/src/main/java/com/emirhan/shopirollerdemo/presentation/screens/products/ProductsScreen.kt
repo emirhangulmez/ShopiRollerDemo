@@ -8,7 +8,6 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.toMutableStateList
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -82,7 +81,10 @@ fun ProductsSearchResultScreen(
     viewModel: ProductsViewModel = hiltViewModel(),
     navigateBack: () -> Unit,
 ) {
-    LaunchedEffect(Unit) { products?.let { viewModel.searchedProducts.addAll(products) } }
+    LaunchedEffect(Unit) { products?.let {
+        viewModel.searchedProducts.clear()
+        viewModel.searchedProducts.addAll(products)
+    } }
 
     Scaffold(
         Modifier.fillMaxSize()

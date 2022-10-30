@@ -10,6 +10,9 @@ interface ProductDao {
     @Query("SELECT * FROM $PRODUCT_TABLE ORDER BY id ASC")
     fun getProducts(): Flow<List<ProductRoomModel>>
 
+    @Query("SELECT * FROM $PRODUCT_TABLE WHERE productID = :productID")
+    fun getProduct(productID: String): Flow<ProductRoomModel>
+
     @Query("DELETE FROM $PRODUCT_TABLE")
     fun deleteProducts()
 

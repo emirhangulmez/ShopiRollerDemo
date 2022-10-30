@@ -9,15 +9,13 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import com.emirhan.shopirollerdemo.R
 import com.emirhan.shopirollerdemo.presentation.screens.Screen
 
 @Composable
 fun BottomNavigationBar(
-    navController: NavHostController,
-    modifier: Modifier = Modifier
+    navController: NavHostController, modifier: Modifier = Modifier
 ) {
 
     val homeScreen = Screen.HomeScreen.apply {
@@ -28,8 +26,7 @@ fun BottomNavigationBar(
     }
 
     val items = listOf(
-        homeScreen,
-        categoryScreen
+        homeScreen, categoryScreen
     )
 
 
@@ -57,16 +54,13 @@ fun BottomNavigationBar(
                     },
                     icon = {
                         Icon(
-                            imageVector = item.icon,
-                            contentDescription = "",
-                            tint = Color.White
+                            imageVector = item.icon, contentDescription = "", tint = Color.White
                         )
                     },
                     selectedContentColor = Color.White
                 )
             } else {
-                BottomNavigationItem(
-                    selected = navController.currentDestination?.route == item.route,
+                BottomNavigationItem(selected = navController.currentDestination?.route == item.route,
                     unselectedContentColor = Color.White.copy(alpha = 0.4f),
                     onClick = {
                         if (navController.currentDestination?.route != item.route) {
@@ -83,8 +77,7 @@ fun BottomNavigationBar(
                     },
                     icon = {
                         Icon(imageVector = item.icon, contentDescription = item.label)
-                    }
-                )
+                    })
             }
         }
     }

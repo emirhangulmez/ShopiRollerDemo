@@ -61,14 +61,13 @@ fun ProductImage(
         tileMode = TileMode.Mirror
     )
 
-    val getProductItems by viewModel.repo.getProducts().collectAsState(initial = emptyList())
+    val productItemFromRoom by viewModel.repo.getProduct(product.id).collectAsState(initial = null)
     val basketVisibilityState = remember { MutableTransitionState(true) }
     var quantityState by remember { mutableStateOf(0) }
 
-    LaunchedEffect(getProductItems) {
-        getProductItems.find { it.productID == product.id }.also { result ->
-            result?.let { productDB ->
-                productDB.quantity?.let { qty ->
+    LaunchedEffect(productItemFromRoom) {
+        productItemFromRoom?.let { productRoomModel ->
+                productRoomModel.quantity?.let { qty ->
                     if (qty >= 1) {
                         quantityState = qty
                         basketVisibilityState.targetState = false
@@ -77,11 +76,10 @@ fun ProductImage(
                     }
                 }
             }
-        }
     }
 
     LaunchedEffect(quantityState) {
-        getProductItems.find { it.productID == product.id }.also { result ->
+        productItemFromRoom.also { result ->
             result?.let { productDB ->
                 productDB.quantity?.let { qty ->
                     if (qty >= 1) {
@@ -182,12 +180,10 @@ fun ProductImage(
                 IconButton(
                     onClick = {
                         scope.launch {
-                            getProductItems.let { products ->
-                                if (products.all { it.productID != product.id }) {
-                                    viewModel.repo.addProduct(ProductRoomModel(productID = product.id))
-                                } else {
-                                    getProductItems.let {
-                                        products.find { it.productID == product.id }?.maxQuantityPerOrder?.let { maxQuantityPerOrder ->
+                            productItemFromRoom.let { productFromRoom ->
+                                if (productFromRoom != null) {
+                                    productFromRoom.let {
+                                        productFromRoom.maxQuantityPerOrder?.let { maxQuantityPerOrder ->
                                             if (maxQuantityPerOrder >= quantityState) {
                                                 viewModel.repo.increaseQuantity(product.id)
                                             } else {
@@ -198,6 +194,8 @@ fun ProductImage(
                                         }
 
                                     }
+                                } else {
+                                    viewModel.repo.addProduct(ProductRoomModel(productID = product.id))
                                 }
                             }
 
@@ -226,13 +224,12 @@ fun ProductImage(
             IconButton(
                 onClick = {
                     scope.launch {
-                        getProductItems.let { products ->
-                            if (products.all { it.productID != product.id }) {
-                                viewModel.repo.addProduct(ProductRoomModel(productID = product.id, maxQuantityPerOrder = product.maxQuantityPerOrder))
-                            } else {
+                            if (productItemFromRoom != null) {
                                 viewModel.repo.increaseQuantity(product.id)
+                            } else {
+                                viewModel.repo.addProduct(ProductRoomModel(productID = product.id, maxQuantityPerOrder = product.maxQuantityPerOrder))
                             }
-                        }
+
 
                         scaffoldState.snackbarHostState.showSnackbar(
                             message = ADDED_TO_BASKET

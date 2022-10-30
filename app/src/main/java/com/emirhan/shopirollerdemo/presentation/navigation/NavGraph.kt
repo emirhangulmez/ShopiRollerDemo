@@ -28,8 +28,7 @@ fun NavGraph(
     navController: NavHostController
 ) {
     AnimatedNavHost(
-        navController = navController,
-        startDestination = Screen.HomeScreen.route
+        navController = navController, startDestination = Screen.HomeScreen.route
     ) {
         addHome(navController)
         addCategoryScreen(navController)
@@ -48,22 +47,16 @@ fun NavGraphBuilder.addHome(
         enterTransition = {
             slideInHorizontally(
                 animationSpec = tween(
-                    durationMillis = 300,
-                    easing = FastOutSlowInEasing
+                    durationMillis = 300, easing = FastOutSlowInEasing
                 )
             ) + fadeIn(animationSpec = tween(300))
         },
         exitTransition = {
-            if (initialState.destination.route == Screen.CategoryScreen.route) {
-                ExitTransition.None
-            } else {
-                slideOutHorizontally(
-                    animationSpec = tween(
-                        durationMillis = 300,
-                        easing = FastOutSlowInEasing
-                    )
+            slideOutHorizontally(
+                animationSpec = tween(
+                    durationMillis = 300, easing = FastOutSlowInEasing
                 )
-            }
+            )
         },
     ) {
         rememberSystemUiController().setStatusBarColor(
@@ -96,22 +89,16 @@ fun NavGraphBuilder.addCategoryScreen(
         enterTransition = {
             slideInHorizontally(
                 animationSpec = tween(
-                    durationMillis = 300,
-                    easing = FastOutSlowInEasing
+                    durationMillis = 300, easing = FastOutSlowInEasing
                 )
             ) + fadeIn(animationSpec = tween(300))
         },
         exitTransition = {
-            if (initialState.destination.route == Screen.HomeScreen.route) {
-                ExitTransition.None
-            } else {
-                slideOutHorizontally(
-                    animationSpec = tween(
-                        durationMillis = 300,
-                        easing = FastOutSlowInEasing
-                    )
+            slideOutHorizontally(
+                animationSpec = tween(
+                    durationMillis = 300, easing = FastOutSlowInEasing
                 )
-            }
+            )
         },
     ) {
         val systemUiController = rememberSystemUiController()
@@ -136,36 +123,27 @@ fun NavGraphBuilder.addCategoryScreen(
 fun NavGraphBuilder.addProductsScreen(
     navController: NavHostController
 ) {
-    composable(
-        route = "${Screen.ProductsScreen.route}/{$CATEGORY_ID}",
-        arguments = listOf(
-            navArgument(CATEGORY_ID) {
-                type = NavType.StringType
-            }
-        ),
+    composable(route = "${Screen.ProductsScreen.route}/{$CATEGORY_ID}",
+        arguments = listOf(navArgument(CATEGORY_ID) {
+            type = NavType.StringType
+        }),
         enterTransition = {
             slideInVertically(
                 animationSpec = tween(
-                    durationMillis = 300,
-                    easing = FastOutSlowInEasing
+                    durationMillis = 300, easing = FastOutSlowInEasing
                 )
             ) + fadeIn(animationSpec = tween(300))
-        }
-    ) { backStackEntry ->
+        }) { backStackEntry ->
         rememberSystemUiController().setStatusBarColor(
-            color = Color.Transparent,
-            darkIcons = MaterialTheme.colors.isLight
+            color = Color.Transparent, darkIcons = MaterialTheme.colors.isLight
         )
         rememberSystemUiController().setNavigationBarColor(
-            color = Color.Transparent,
-            darkIcons = false
+            color = Color.Transparent, darkIcons = false
         )
         val categoryID = backStackEntry.arguments?.getString(CATEGORY_ID) ?: ""
-        ProductsScreen(
-            categoryID = categoryID,
+        ProductsScreen(categoryID = categoryID,
             navigateProduct = { productID -> navController.navigate("${Screen.ProductScreen.route}/${productID}") },
-            navigateBack = { navController.popBackStack() }
-        )
+            navigateBack = { navController.popBackStack() })
     }
 }
 
@@ -174,31 +152,28 @@ fun NavGraphBuilder.addProductsScreen(
 fun NavGraphBuilder.addProductSearchScreen(
     navController: NavHostController
 ) {
-    composable(
-        route = Screen.ProductSearchScreen.route,
-        enterTransition = {
-            slideInVertically(
-                animationSpec = tween(
-                    durationMillis = 300,
-                    easing = FastOutSlowInEasing
-                )
-            ) + fadeIn(animationSpec = tween(300))
-        }
-    ) {
+    composable(route = Screen.ProductSearchScreen.route, enterTransition = {
+
+        slideInVertically(
+            animationSpec = tween(
+                durationMillis = 300, easing = FastOutSlowInEasing
+            )
+        ) + fadeIn(animationSpec = tween(300))
+    }) {
         rememberSystemUiController().setStatusBarColor(
-            color = Color.Transparent,
-            darkIcons = MaterialTheme.colors.isLight
+            color = Color.Transparent, darkIcons = MaterialTheme.colors.isLight
         )
         rememberSystemUiController().setNavigationBarColor(
-            color = Color.Transparent,
-            darkIcons = false
+            color = Color.Transparent, darkIcons = false
         )
         ProductsSearchResultScreen(
             products = navController.previousBackStackEntry?.savedStateHandle?.get<List<Products>>("products"),
-            navigateProduct = { productID -> navController.navigate("${Screen.ProductScreen.route}/${productID}") },
+            navigateProduct = { productID ->
+                navController.navigate("${Screen.ProductScreen.route}/${productID}")
+            },
             viewModel = hiltViewModel(),
-            navigateBack = { navController.popBackStack() }
-        )
+            navigateBack = { navController.popBackStack()
+        })
     }
 }
 
@@ -206,35 +181,26 @@ fun NavGraphBuilder.addProductSearchScreen(
 fun NavGraphBuilder.addProductScreen(
     navController: NavHostController
 ) {
-    composable(
-        route = "${Screen.ProductScreen.route}/{$PRODUCT_ID}",
-        arguments = listOf(
-            navArgument(PRODUCT_ID) {
-                type = NavType.StringType
-            }
-        ),
+    composable(route = "${Screen.ProductScreen.route}/{$PRODUCT_ID}",
+        arguments = listOf(navArgument(PRODUCT_ID) {
+            type = NavType.StringType
+        }),
         enterTransition = {
             slideIntoContainer(
-                towards = AnimatedContentScope.SlideDirection.Down,
-                animationSpec = tween(
-                    durationMillis = 300,
-                    easing = FastOutSlowInEasing
+                towards = AnimatedContentScope.SlideDirection.Down, animationSpec = tween(
+                    durationMillis = 300, easing = FastOutSlowInEasing
                 )
             ) + fadeIn(animationSpec = tween(300))
-        }
-    ) { backStackEntry ->
+        }) { backStackEntry ->
         rememberSystemUiController().setStatusBarColor(
-            color = Color.Transparent,
-            darkIcons = false
+            color = Color.Transparent, darkIcons = false
         )
         rememberSystemUiController().setNavigationBarColor(
-            color = Color.Transparent,
-            darkIcons = false
+            color = Color.Transparent, darkIcons = false
         )
         val productID = backStackEntry.arguments?.getString(PRODUCT_ID) ?: ""
-        ProductScreen(
-            productID = productID,
-            navigateToProducts = { navController.popBackStack() }
-        )
+        ProductScreen(productID = productID, navigateToProducts = {
+            navController.popBackStack()
+        })
     }
 }
