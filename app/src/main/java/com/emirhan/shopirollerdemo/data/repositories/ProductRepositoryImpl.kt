@@ -12,6 +12,9 @@ class ProductRepositoryImpl(
 ) : ProductRepository {
     override fun getProducts(): Flow<List<ProductRoomModel>> = productDao.getProducts()
 
+    override fun getProduct(productID: String): Flow<ProductRoomModel> =
+        productDao.getProduct(productID)
+
     override fun deleteProducts() = productDao.deleteProducts()
 
     override suspend fun addProduct(product: ProductRoomModel) = withContext(Dispatchers.IO) {

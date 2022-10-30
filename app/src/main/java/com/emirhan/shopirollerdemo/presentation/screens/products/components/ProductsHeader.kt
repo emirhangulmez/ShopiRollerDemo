@@ -23,7 +23,6 @@ import com.emirhan.shopirollerdemo.core.Constants.Companion.PRODUCTS_HEADER
 import com.emirhan.shopirollerdemo.core.Constants.Companion.SEARCH_ACTION
 import com.emirhan.shopirollerdemo.core.Constants.Companion.SEARCH_RESULTS
 import com.emirhan.shopirollerdemo.core.Constants.Companion.TITLE
-import com.emirhan.shopirollerdemo.data.remote.dto.Products
 import com.emirhan.shopirollerdemo.presentation.screens.products.ProductsViewModel
 import com.google.accompanist.placeholder.PlaceholderHighlight
 import com.google.accompanist.placeholder.placeholder

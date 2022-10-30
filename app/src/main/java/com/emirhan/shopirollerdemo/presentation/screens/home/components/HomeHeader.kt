@@ -58,7 +58,7 @@ fun HomeHeader(
     val context = LocalContext.current
     val intent = remember { Intent(Intent.ACTION_VIEW, Uri.parse(MAIN_URL)) }
 
-        LaunchedEffect(visibilityState.currentState) {
+    LaunchedEffect(visibilityState.currentState) {
         if (visibilityState.currentState) {
             focusManager.clearFocus()
         } else {
@@ -77,43 +77,38 @@ fun HomeHeader(
         horizontalArrangement = Arrangement.Center,
     ) {
         AnimatedVisibility(
-            visibleState = visibilityState,
-            enter = EnterTransition.None,
-            exit = fadeOut(
+            visibleState = visibilityState, enter = EnterTransition.None, exit = fadeOut(
                 animationSpec = tween(500)
             )
         ) {
             Box(modifier = Modifier.fillMaxWidth()) {
-                 IconButton(modifier = Modifier
-                     .align(Alignment.TopStart)
-                     .padding(start = 10.dp)
-                     .clip(CircleShape)
-                     .background(if (MaterialTheme.colors.isLight) Color.LightGray else Color.DarkGray),
-                     onClick = { visibilityState.targetState = false }
-                 ) {
-                     Icon(
-                         imageVector = Icons.Default.Search,
-                         contentDescription = SEARCH_ICON
-                     )
-                 }
-                 Image(
-                     modifier = Modifier
-                         .fillMaxWidth()
-                         .height(50.dp),
-                     painter = painterResource(id = if (MaterialTheme.colors.isLight) R.drawable.logo_dark else R.drawable.logo_light),
-                     contentDescription = APP_LOGO
-                 )
-                 IconButton(modifier = Modifier
-                     .align(Alignment.TopEnd)
-                     .padding(end = 10.dp)
-                     .clip(CircleShape)
-                     .background(if (MaterialTheme.colors.isLight) Color.LightGray else Color.DarkGray),
-                     onClick = { context.startActivity(intent) }) {
-                     Icon(
-                         imageVector = Icons.Default.ArrowForward,
-                         contentDescription = SETTINGS_ICON
-                     )
-                 }
+                IconButton(modifier = Modifier
+                    .align(Alignment.TopStart)
+                    .padding(start = 10.dp)
+                    .clip(CircleShape)
+                    .background(if (MaterialTheme.colors.isLight) Color.LightGray else Color.DarkGray),
+                    onClick = { visibilityState.targetState = false }) {
+                    Icon(
+                        imageVector = Icons.Default.Search, contentDescription = SEARCH_ICON
+                    )
+                }
+                Image(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(50.dp),
+                    painter = painterResource(id = if (MaterialTheme.colors.isLight) R.drawable.logo_dark else R.drawable.logo_light),
+                    contentDescription = APP_LOGO
+                )
+                IconButton(modifier = Modifier
+                    .align(Alignment.TopEnd)
+                    .padding(end = 10.dp)
+                    .clip(CircleShape)
+                    .background(if (MaterialTheme.colors.isLight) Color.LightGray else Color.DarkGray),
+                    onClick = { context.startActivity(intent) }) {
+                    Icon(
+                        imageVector = Icons.Default.ArrowForward, contentDescription = SETTINGS_ICON
+                    )
+                }
             }
         }
 
@@ -128,19 +123,16 @@ fun HomeHeader(
                     .background(if (MaterialTheme.colors.isLight) Color.LightGray else Color.DarkGray),
                     onClick = {
                         visibilityState.targetState = true
-                    }
-                ) {
+                    }) {
                     Icon(
                         imageVector = Icons.Default.KeyboardArrowLeft,
                         contentDescription = NAVIGATE_BACK
                     )
                 }
-                
-                ExposedDropdownMenuBox(modifier = Modifier
-                    .align(Alignment.Center),
+
+                ExposedDropdownMenuBox(modifier = Modifier.align(Alignment.Center),
                     expanded = viewModel.expanded,
-                    onExpandedChange = {}
-                ) {
+                    onExpandedChange = {}) {
                     OutlinedTextField(
                         modifier = Modifier
                             .widthIn(250.dp)
@@ -149,11 +141,9 @@ fun HomeHeader(
                         singleLine = true,
                         onValueChange = { viewModel.onSearchChanged(it) },
 
-                    )
-                    ExposedDropdownMenu(
-                        expanded = viewModel.expanded,
-                        onDismissRequest = {viewModel.expanded  = !viewModel.expanded}
-                    ) {
+                        )
+                    ExposedDropdownMenu(expanded = viewModel.expanded,
+                        onDismissRequest = { viewModel.expanded = !viewModel.expanded }) {
                         viewModel.searchState.forEach { products ->
                             DropdownMenuItem(onClick = {
                                 scope.launch {
@@ -171,11 +161,12 @@ fun HomeHeader(
                                 products.title?.let { title ->
                                     if (products.price != null) {
                                         Text(
-                                            text =
-                                            if (products.campaignPrice != 0.0 && products.campaignPrice != null)
-                                                "$title (${decimalFormatter.format(products.campaignPrice)} ${currency.symbol})"
-                                            else
-                                                "$title (${decimalFormatter.format(products.price)} ${currency.symbol})"
+                                            text = if (products.campaignPrice != 0.0 && products.campaignPrice != null) "$title (${
+                                                decimalFormatter.format(
+                                                    products.campaignPrice
+                                                )
+                                            } ${currency.symbol})"
+                                            else "$title (${decimalFormatter.format(products.price)} ${currency.symbol})"
                                         )
                                     }
                                 }
@@ -192,17 +183,14 @@ fun HomeHeader(
                     onClick = {
                         if (viewModel.searchText.length > 2) {
                             navController.currentBackStackEntry?.savedStateHandle?.set(
-                                key = PRODUCTS,
-                                value = viewModel.searchState.toList()
+                                key = PRODUCTS, value = viewModel.searchState.toList()
                             )
                             navController.navigate(Screen.ProductSearchScreen.route)
                         }
-                    }
-                    ) {
-                        Icon(
-                            imageVector = Icons.Default.Search,
-                            contentDescription = SEARCH_ICON
-                        )
+                    }) {
+                    Icon(
+                        imageVector = Icons.Default.Search, contentDescription = SEARCH_ICON
+                    )
                 }
             }
         }
